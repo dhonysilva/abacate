@@ -83,7 +83,7 @@ dev.duckdb> show tables
 +--------------------+
 ```
 
-Stating folder. When running the `dbt build` command, it creates the underlying tables into the `dev.duckdb` database.
+Staging folder. When running the `dbt build` command, it creates the underlying tables into the `dev.duckdb` database.
 
 The tables created are:
 
