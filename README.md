@@ -59,3 +59,26 @@ To learn more about this template and Dagster in general:
 - [Dagster Documentation](https://docs.dagster.io/)
 - [Dagster University](https://courses.dagster.io/)
 - [Dagster Slack Community](https://dagster.io/slack)
+
+## dbt
+
+We already feeded the seeds folder with the raw csv files. When runnung the `dbt build` command, it creates the underlying tables into the `dev.duckdb` database.
+
+The tables created are:
+
+* `raw_customers`
+* `raw_orders`
+* `raw_payments`
+
+Access into duckdb database with `duckcli dev.duckdb` command and once into the database, type `show tables;` it'll list these items.
+
+```text
+dev.duckdb> show tables
++--------------------+
+| name               |
++--------------------+
+| raw_customers      |
+| raw_orders         |
+| raw_payments       |
++--------------------+
+```
