@@ -62,7 +62,7 @@ To learn more about this template and Dagster in general:
 
 ## dbt
 
-We already feeded the seeds folder with the raw csv files. When runnung the `dbt build` command, it creates the underlying tables into the `dev.duckdb` database.
+We already feeded the seeds folder with the raw csv files. When running the `dbt build` command, it creates the underlying tables into the `dev.duckdb` database.
 
 The tables created are:
 
@@ -80,5 +80,29 @@ dev.duckdb> show tables
 | raw_customers      |
 | raw_orders         |
 | raw_payments       |
++--------------------+
+```
+
+Staging folder. When running the `dbt build` command, it creates the underlying tables into the `dev.duckdb` database.
+
+The tables created are:
+
+* `stg_customers`
+* `stg_orders`
+* `stg_payments`
+
+Access into duckdb database with `duckcli dev.duckdb` command and once into the database, type `show tables;` it'll list these items.
+
+```text
+dev.duckdb> show tables
++--------------------+
+| name               |
++--------------------+
+| raw_customers      |
+| raw_orders         |
+| raw_payments       |
+| stg_customers      |
+| stg_orders         |
+| stg_payments       |
 +--------------------+
 ```
