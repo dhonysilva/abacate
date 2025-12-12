@@ -1,5 +1,5 @@
 with source as (
-    select * from {{ ref('raw_payments') }}
+    select * from {{ source('main', 'raw_payments') }}
 ),
 
 renamed as (

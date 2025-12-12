@@ -2,3 +2,5 @@ type: dagster_dbt.DbtProjectComponent
 
 attributes:
   project: "{{ context.project_root }}/dbt_abacate"
+  translation:
+    key: "target/main/{{ node.name }}"
