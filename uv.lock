@@ -15,6 +15,7 @@ dependencies = [
     { name = "dagster" },
     { name = "dagster-dbt" },
     { name = "dagster-dg-cli" },
+    { name = "dagster-duckdb" },
     { name = "dagster-webserver" },
     { name = "dbt-duckdb" },
     { name = "duckcli" },
@@ -32,6 +33,7 @@ requires-dist = [
     { name = "dagster", specifier = "==1.12.5" },
     { name = "dagster-dbt", specifier = ">=0.28.5" },
     { name = "dagster-dg-cli", specifier = ">=1.12.5" },
+    { name = "dagster-duckdb", specifier = ">=0.28.5" },
     { name = "dagster-webserver", specifier = ">=1.12.5" },
     { name = "dbt-duckdb", specifier = ">=1.10.0" },
     { name = "duckcli", specifier = ">=0.2.1" },
@@ -537,6 +539,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ed/45/c23bef8ec721a80682a4f27dd3a5ae2cfcba115f0c6180950089e8466765/dagster_dg_core-1.12.5.tar.gz", hash = "sha256:32eaade6516598bde0bf675f75ad8f5cc1e05e41f770181d1d3f86c3b6b44c0c", size = 40976, upload-time = "2025-12-09T23:34:07.024Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/40/d8/47a23ea600b2af85dc58990864b45b0147ce3fc96bb4629ad6aed40d0e5c/dagster_dg_core-1.12.5-py3-none-any.whl", hash = "sha256:27c2d46e6397aadc08efea80ce18b8092adfeb202825bff793ef7bf54c6d0f48", size = 46933, upload-time = "2025-12-09T23:34:06.018Z" },
+]
+
+[[package]]
+name = "dagster-duckdb"
+version = "0.28.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dagster" },
+    { name = "duckdb" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f9/1d/435bc080e391051d909b62d36430f1fa7a90420f005caffaac024456b3e2/dagster_duckdb-0.28.5.tar.gz", hash = "sha256:c02311b687d04a43edfe0203133fd3971a62d5d479dda1adf6b357215a58823c", size = 9363, upload-time = "2025-12-09T23:33:34.287Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/40/2d/be4b4aa7a7719d8a60d4925ec92d189353b6e72e1a6f2f99eea0f307b490/dagster_duckdb-0.28.5-py3-none-any.whl", hash = "sha256:5b7d93d4a6eb5ff45af100cbaa66dbcb76fef1d8e729505dda62144f29811f31", size = 10575, upload-time = "2025-12-09T23:33:33.359Z" },
 ]
 
 [[package]]
