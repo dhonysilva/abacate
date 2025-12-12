@@ -1,6 +1,5 @@
 import dagster as dg
 import duckdb
-import filelock
 from dagster_duckdb import DuckDBResource
 
 # DuckDB helper functions
@@ -19,11 +18,14 @@ def import_url_to_duckdb(url: str, duckdb: DuckDBResource, table_name: str):
 
 # Assets
 
-@dg.asset(kinds={"duckdb"}, key=["target", "main", "raw_customers"])
+@dg.asset(
+    kinds={"duckdb"},
+    key=["target", "main", "raw_customers"]
+)
 def raw_customers(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_customers.csv",
-        duckdb_path="dev.duckdb",
+        duckdb=duckdb,
         table_name="dev.main.raw_customers",
     )
 
@@ -32,7 +34,7 @@ def raw_customers(duckdb: DuckDBResource) -> None:
 def raw_orders(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_orders.csv",
-        duckdb_path="dev.duckdb",
+        duckdb=duckdb,
         table_name="dev.main.raw_orders",
     )
 
@@ -41,6 +43,26 @@ def raw_orders(duckdb: DuckDBResource) -> None:
 def raw_payments(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_payments.csv",
-        duckdb_path="dev.duckdb",
+        duckdb=duckdb,
         table_name="dev.main.raw_payments",
     )
+
+
+@dg.asset_check(
+    asset=raw_customers,
+    description="Check if there are any null customer_ids in the joined data",
+)
+def missing_dimension_check(duckdb: DuckDBResource) -> dg.AssetCheckResult:
+    table_name = "dev.main.raw_customers"
+
+    with duckdb.get_connection() as conn:
+        query_result = conn.execute(
+            f"""
+            select count(*)
+            from {table_name}
+            where id is null
+            """
+        ).fetchone()
+
+        count = query_result[0] if query_result else 0
+        return dg.AssetCheckResult(passed=count == 0, metadata={"customer_id is null": count})
