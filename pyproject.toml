@@ -6,6 +6,7 @@ dependencies = [
     "dagster==1.12.5",
     "dagster-dbt>=0.28.5",
     "dagster-dg-cli>=1.12.5",
+    "dagster-duckdb>=0.28.5",
     "dagster-webserver>=1.12.5",
     "dbt-duckdb>=1.10.0",
     "duckcli>=0.2.1",
