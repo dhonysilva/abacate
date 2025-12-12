@@ -1,32 +1,26 @@
 import dagster as dg
 import duckdb
 import filelock
+from dagster_duckdb import DuckDBResource
 
 # DuckDB helper functions
 
-def serialize_duckdb_query(duckdb_path: str, sql: str):
-    """Execute SQL statement with file lock to guarantee cross-process concurrency."""
-    lock_path = f"{duckdb_path}.lock"
-    with filelock.FileLock(lock_path):
-        conn = duckdb.connect(duckdb_path)
-        try:
-            return conn.execute(sql)
-        finally:
-            conn.close()
-
-def import_url_to_duckdb(url: str, duckdb_path: str, table_name: str):
-    create_query = f"""
-        create or replace table {table_name} as (
-            select * from read_csv_auto('{url}')
-        )
-    """
-
-    serialize_duckdb_query(duckdb_path, create_query)
+def import_url_to_duckdb(url: str, duckdb: DuckDBResource, table_name: str):
+    with duckdb.get_connection() as conn:
+        row_count = conn.execute(
+            f"""
+            create or replace table {table_name} as (
+                select * from read_csv_auto('{url}')
+            )
+            """
+        ).fetchone()
+        assert row_count is not None
+        row_count = row_count[0]
 
 # Assets
 
 @dg.asset(kinds={"duckdb"}, key=["target", "main", "raw_customers"])
-def raw_customers() -> None:
+def raw_customers(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_customers.csv",
         duckdb_path="dev.duckdb",
@@ -35,7 +29,7 @@ def raw_customers() -> None:
 
 
 @dg.asset(kinds={"duckdb"}, key=["target", "main", "raw_orders"])
-def raw_orders() -> None:
+def raw_orders(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_orders.csv",
         duckdb_path="dev.duckdb",
@@ -44,7 +38,7 @@ def raw_orders() -> None:
 
 
 @dg.asset(kinds={"duckdb"}, key=["target", "main", "raw_payments"])
-def raw_payments() -> None:
+def raw_payments(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_payments.csv",
         duckdb_path="dev.duckdb",
