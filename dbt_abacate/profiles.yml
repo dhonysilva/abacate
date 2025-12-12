@@ -2,7 +2,7 @@ dbt_abacate:
   outputs:
     dev:
       type: duckdb
-      path: dev.duckdb
+      path: abacate.duckdb
       threads: 1
 
     prod:
