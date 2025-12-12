@@ -20,7 +20,8 @@ def import_url_to_duckdb(url: str, duckdb: DuckDBResource, table_name: str):
 
 @dg.asset(
     kinds={"duckdb"},
-    key=["target", "main", "raw_customers"]
+    key=["target", "main", "raw_customers"],
+    automation_condition=dg.AutomationCondition.on_cron("0 0 * * 1"),  # every Monday at midnight
 )
 def raw_customers(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
@@ -30,7 +31,11 @@ def raw_customers(duckdb: DuckDBResource) -> None:
     )
 
 
-@dg.asset(kinds={"duckdb"}, key=["target", "main", "raw_orders"])
+@dg.asset(
+    kinds={"duckdb"},
+    key=["target", "main", "raw_orders"],
+    automation_condition=dg.AutomationCondition.on_cron("0 0 * * 1"),  # every Monday at midnight
+)
 def raw_orders(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_orders.csv",
@@ -39,7 +44,11 @@ def raw_orders(duckdb: DuckDBResource) -> None:
     )
 
 
-@dg.asset(kinds={"duckdb"}, key=["target", "main", "raw_payments"])
+@dg.asset(
+    kinds={"duckdb"},
+    key=["target", "main", "raw_payments"],
+    automation_condition=dg.AutomationCondition.on_cron("0 0 * * 1"),  # every Monday at midnight
+)
 def raw_payments(duckdb: DuckDBResource) -> None:
     import_url_to_duckdb(
         url="https://raw.githubusercontent.com/dbt-labs/jaffle-shop-classic/refs/heads/main/seeds/raw_payments.csv",
